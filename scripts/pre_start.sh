@@ -13,11 +13,14 @@ fi
 sync_apps() {
     # Sync venv to workspace to support Network volumes
     echo "Syncing venv to workspace, please wait..."
-    rsync -rlptDu /venv/ /workspace/venv/
+    rsync -remove-source-files -rlptDu /venv/ /workspace/venv/
 
     # Sync SUPIR to workspace to support Network volumes
     echo "Syncing SUPIR to workspace, please wait..."
-    rsync -rlptDu /SUPIR/ /workspace/SUPIR/
+    rsync -remove-source-files -rlptDu /SUPIR/ /workspace/SUPIR/
+
+    echo "Syncing models to workspace, please wait..."
+    rsync --remove-source-files -rlptDu /hub/ /workspace/hub/
 
     echo "${TEMPLATE_VERSION}" > /workspace/template_version
 }

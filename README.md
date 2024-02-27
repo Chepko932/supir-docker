@@ -1,4 +1,4 @@
-# Docker image for SUPER (Scaling Up to Excellence: Practicing Model Scaling for Photo-Realistic Image Restoration In the Wild)
+# Docker image for SUPIR (Scaling Up to Excellence: Practicing Model Scaling for Photo-Realistic Image Restoration In the Wild)
 
 ## Installs
 

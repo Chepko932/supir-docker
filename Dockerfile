@@ -85,7 +85,7 @@ RUN source /venv/bin/activate && \
     deactivate
 
 # Install the models
-RUN mkidr -p /SUPIR/models && \
+RUN mkdir -p /SUPIR/models && \
     cd /SUPIR/models && \
     wget https://huggingface.co/laion/CLIP-ViT-bigG-14-laion2B-39B-b160k/resolve/main/open_clip_pytorch_model.bin && \
     wget https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0_0.9vae.safetensors && \

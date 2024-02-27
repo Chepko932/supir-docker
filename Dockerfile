@@ -3,7 +3,7 @@ FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04 as base
 
 # The commit is not used, its just here as a reference to where it
 # was at the last time this repo was updated.
-ARG SUPIR_COMMIT=273c987fe44f23df1e86c8594942d165185b69e5
+ARG SUPIR_COMMIT=7de88bfa227dc58ab2cfcd599739ba9e30f9ad27
 ARG TORCH_VERSION=2.2.0
 ARG XFORMERS_VERSION=0.0.24
 

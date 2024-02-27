@@ -52,21 +52,29 @@ then
     echo "   export HF_HOME=\"/workspace\""
     echo "   python3 gradio_demo.py --ip 0.0.0.0 --port 3001 --use_image_slider --loading_half_params --use_tile_vae --load_8bit_llava"
 else
-    export HF_HOME="/workspace"
-    source /workspace/venv/bin/activate
-
     echo "Updating SUPIR"
     cd /workspace/SUPIR
     git pull
 
     echo "Starting SUPIR"
-    nohup python3 gradio_demo.py \
-        --ip 0.0.0.0 \
-        --port 3001 \
-        --use_image_slider \
-        --loading_half_params \
-        --use_tile_vae \
-        --load_8bit_llava > /workspace/logs/supir.log 2>&1 &
+    source /workspace/venv/bin/activate
+    export HF_HOME="/workspace"
+
+    if [[ ${NO_GPU_OPTIMIZATION} ]]
+    then
+        nohup python3 gradio_demo.py \
+            --ip 0.0.0.0 \
+            --port 3001 \
+            --use_image_slider > /workspace/logs/supir.log 2>&1 &
+    else
+        nohup python3 gradio_demo.py \
+            --ip 0.0.0.0 \
+            --port 3001 \
+            --use_image_slider \
+            --loading_half_params \
+            --use_tile_vae \
+            --load_8bit_llava > /workspace/logs/supir.log 2>&1 &
+    fi
     echo "SUPIR started"
     echo "Log file: /workspace/logs/supir.log"
     deactivate

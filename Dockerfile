@@ -3,7 +3,7 @@ FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04 as base
 
 # The commit is not used, its just here as a reference to where it
 # was at the last time this repo was updated.
-ARG SUPIR_COMMIT=73763945797d13ca13fb7ee0681089390012c29b
+ARG SUPIR_COMMIT=273c987fe44f23df1e86c8594942d165185b69e5
 ARG TORCH_VERSION=2.2.0
 ARG XFORMERS_VERSION=0.0.24
 
@@ -84,13 +84,20 @@ RUN source /venv/bin/activate && \
     pip3 install ${XFORMERS_PACKAGE} &&  \
     deactivate
 
-# Download the models
-RUN mkdir -p /SUPIR/models && \
-    cd /SUPIR/models && \
-    wget https://huggingface.co/laion/CLIP-ViT-bigG-14-laion2B-39B-b160k/resolve/main/open_clip_pytorch_model.bin && \
-    wget https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0_0.9vae.safetensors && \
-    wget https://huggingface.co/ashleykleynhans/SUPIR/resolve/main/SUPIR-v0F.ckpt && \
-    wget https://huggingface.co/ashleykleynhans/SUPIR/resolve/main/SUPIR-v0Q.ckpt
+# Create model directory
+RUN mkdir -p /SUPIR/models
+
+# Add SDXL CLIP2 model
+ADD https://huggingface.co/laion/CLIP-ViT-bigG-14-laion2B-39B-b160k/resolve/main/open_clip_pytorch_model.bin /SUPIR/models/open_clip_pytorch_model.bin
+
+# Add Juggernaut-XL-v9 SDXL model
+ADD https://huggingface.co/RunDiffusion/Juggernaut-XL-v9/resolve/main/Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors /SUPIR/models/Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors
+
+# Add SUPIR F model
+ADD https://huggingface.co/ashleykleynhans/SUPIR/resolve/main/SUPIR-v0F.ckpt /SUPIR/models/SUPIR-v0F.ckpt
+
+# Add SUPIR Q model
+ADD https://huggingface.co/ashleykleynhans/SUPIR/resolve/main/SUPIR-v0Q.ckpt /SUPIR/models/SUPIR-v0Q.ckpt
 
 # Download additional models
 ENV LLAVA_MODEL="liuhaotian/llava-v1.5-7b"
@@ -137,7 +144,7 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/502.html /usr/share/nginx/html/502.html
 
 # Set the template version
-ENV TEMPLATE_VERSION=1.0.2
+ENV TEMPLATE_VERSION=1.1.0
 
 # Copy the scripts
 WORKDIR /

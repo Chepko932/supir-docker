@@ -54,7 +54,6 @@ then
 else
     echo "Updating SUPIR"
     cd /workspace/SUPIR
-    git pull
 
     echo "Starting SUPIR"
     source /workspace/venv/bin/activate

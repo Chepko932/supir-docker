@@ -46,14 +46,14 @@ then
     echo ""
     echo "   cd /workspace/SUPIR"
     echo "   deactivate && source /workspace/venv/bin/activate"
-    echo "   ./webui.sh -f"
+    echo "   python3 gradio_demo.py --ip 0.0.0.0 --port 3001 --use_image_slider"
 else
     echo "Starting SUPIR"
     export HF_HOME="/workspace"
     source /workspace/venv/bin/activate
     cd /workspace/SUPIR
     git pull
-    nohup ./webui.sh -f > /workspace/logs/supir.log 2>&1 &
+    nohup python3 gradio_demo.py --ip 0.0.0.0 --port 3001 --use_image_slider > /workspace/logs/supir.log 2>&1 &
     echo "SUPIR started"
     echo "Log file: /workspace/logs/supir.log"
     deactivate

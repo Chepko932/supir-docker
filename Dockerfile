@@ -3,7 +3,7 @@ FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04 as base
 
 # The commit is not used, its just here as a reference to where it
 # was at the last time this repo was updated.
-ARG SUPIRCOMMIT=5166a723c28c35b85e3f086eb79cf061f775a1b8
+# SUPIR_COMMIT=5166a723c28c35b85e3f086eb79cf061f775a1b8
 ARG TORCH_VERSION=2.2.0
 ARG XFORMERS_VERSION=0.0.24
 
@@ -66,13 +66,6 @@ RUN ln -s /usr/bin/python3.10 /usr/bin/python
 # Stage 2: Install SUPIR and python modules
 FROM base as setup
 
-RUN mkdir -p /sd-models
-
-# Add SDXL models and VAE
-# These need to already have been downloaded:
-#   wget https://huggingface.co/lllyasviel/fav_models/resolve/main/fav/realisticVisionV51_v51VAE.safetensors
-COPY realisticVisionV51_v51VAE.safetensors /sd-models/realisticVisionV51_v51VAE.safetensors
-
 # Create and use the Python venv
 RUN python3 -m venv /venv
 
@@ -90,6 +83,14 @@ RUN source /venv/bin/activate && \
     pip3 install -r requirements.txt && \
     pip3 install ${XFORMERS_PACKAGE} &&  \
     deactivate
+
+# Install the models
+RUN mkidr -p /SUPIR/models && \
+    cd /SUPIR/models && \
+    wget https://huggingface.co/laion/CLIP-ViT-bigG-14-laion2B-39B-b160k/resolve/main/open_clip_pytorch_model.bin && \
+    wget https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0_0.9vae.safetensors && \
+    wget https://huggingface.co/ashleykleynhans/SUPIR/resolve/main/SUPIR-v0F.ckpt && \
+    wget https://huggingface.co/ashleykleynhans/SUPIR/resolve/main/SUPIR-v0Q.ckpt
 
 # Install Jupyter, gdown and OhMyRunPod
 RUN pip3 install -U --no-cache-dir jupyterlab \

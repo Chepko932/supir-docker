@@ -1,5 +1,14 @@
 # Docker image for SUPIR (Scaling Up to Excellence: Practicing Model Scaling for Photo-Realistic Image Restoration In the Wild)
 
+> [!IMPORTANT]
+> This needs at least 24GB VRAM for 1x upscale. If you want to upscale more than 1x,
+> you will need more than 24GB of VRAM.  48GB VRAM is recommended.
+
+> [!NOTE]
+> Loading of models on start takes a few minutes, so you can view the log
+> to watch the progress. You will be able to access the port when you see 
+> `Running on local URL:  http://0.0.0.0:3001` in the log.
+
 ## Installs
 
 * Ubuntu 22.04 LTS

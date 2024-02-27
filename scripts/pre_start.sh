@@ -52,10 +52,8 @@ then
     echo "   export HF_HOME=\"/workspace\""
     echo "   python3 gradio_demo.py --ip 0.0.0.0 --port 3001 --use_image_slider --loading_half_params --use_tile_vae --load_8bit_llava"
 else
-    echo "Updating SUPIR"
-    cd /workspace/SUPIR
-
     echo "Starting SUPIR"
+    cd /workspace/SUPIR
     source /workspace/venv/bin/activate
     export HF_HOME="/workspace"
 

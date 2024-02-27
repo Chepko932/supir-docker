@@ -3,7 +3,7 @@ FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04 as base
 
 # The commit is not used, its just here as a reference to where it
 # was at the last time this repo was updated.
-# SUPIR_COMMIT=5166a723c28c35b85e3f086eb79cf061f775a1b8
+ARG SUPIR_COMMIT=73763945797d13ca13fb7ee0681089390012c29b
 ARG TORCH_VERSION=2.2.0
 ARG XFORMERS_VERSION=0.0.24
 
@@ -84,13 +84,22 @@ RUN source /venv/bin/activate && \
     pip3 install ${XFORMERS_PACKAGE} &&  \
     deactivate
 
-# Install the models
+# Download the models
 RUN mkdir -p /SUPIR/models && \
     cd /SUPIR/models && \
     wget https://huggingface.co/laion/CLIP-ViT-bigG-14-laion2B-39B-b160k/resolve/main/open_clip_pytorch_model.bin && \
     wget https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0_0.9vae.safetensors && \
     wget https://huggingface.co/ashleykleynhans/SUPIR/resolve/main/SUPIR-v0F.ckpt && \
     wget https://huggingface.co/ashleykleynhans/SUPIR/resolve/main/SUPIR-v0Q.ckpt
+
+# Download additional models
+ENV LLAVA_MODEL="liuhaotian/llava-v1.5-7b"
+ENV HF_HOME="/"
+COPY --chmod=755 scripts/download_models.py /download_models.py
+RUN source /venv/bin/activate && \
+    pip3 install huggingface_hub && \
+    python3 /download_models.py && \
+    deactivate
 
 # Install Jupyter, gdown and OhMyRunPod
 RUN pip3 install -U --no-cache-dir jupyterlab \

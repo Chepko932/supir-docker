@@ -46,19 +46,24 @@ then
     echo ""
     echo "   cd /workspace/SUPIR"
     echo "   deactivate && source /workspace/venv/bin/activate"
-    echo "   python3 gradio_demo.py --ip 0.0.0.0 --port 3001 --use_image_slider --loading_half_params --use_tile_vae"
+    echo "   export HF_HOME=\"/workspace\""
+    echo "   python3 gradio_demo.py --ip 0.0.0.0 --port 3001 --use_image_slider --loading_half_params --use_tile_vae --load_8bit_llava"
 else
-    echo "Starting SUPIR"
     export HF_HOME="/workspace"
     source /workspace/venv/bin/activate
+
+    echo "Updating SUPIR"
     cd /workspace/SUPIR
     git pull
+
+    echo "Starting SUPIR"
     nohup python3 gradio_demo.py \
         --ip 0.0.0.0 \
         --port 3001 \
         --use_image_slider \
         --loading_half_params \
-        --use_tile_vae > /workspace/logs/supir.log 2>&1 &
+        --use_tile_vae \
+        --load_8bit_llava > /workspace/logs/supir.log 2>&1 &
     echo "SUPIR started"
     echo "Log file: /workspace/logs/supir.log"
     deactivate

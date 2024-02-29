@@ -15,8 +15,8 @@
 * CUDA 12.1
 * Python 3.10.12
 * [SUPIR](
-  https://github.com/Fanghua-Yu/SUPIR)
-* Torch 2.2.0
+  https://github.com/ashleykleynhans/SUPIR)
+* Torch 2.2.1
 * xformers 0.0.24
 * Jupyter Lab
 * [runpodctl](https://github.com/runpod/runpodctl)

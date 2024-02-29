@@ -3,8 +3,8 @@ FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04 as base
 
 # The commit is not used, its just here as a reference to where it
 # was at the last time this repo was updated.
-ARG SUPIR_COMMIT=c0d07ce0ac924f94901694170d8f8f0265126590
-ARG TORCH_VERSION=2.2.0
+ARG SUPIR_COMMIT=ff9ad551e1b8319edb0410acc1da95cfcf25d242
+ARG TORCH_VERSION=2.2.1
 ARG XFORMERS_VERSION=0.0.24
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -109,6 +109,7 @@ RUN source /venv/bin/activate && \
     deactivate
 
 # Install Jupyter, gdown and OhMyRunPod
+WORKDIR /
 RUN pip3 install -U --no-cache-dir jupyterlab \
         jupyterlab_widgets \
         ipykernel \

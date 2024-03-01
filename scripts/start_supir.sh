@@ -2,7 +2,7 @@
 
 echo "Starting SUPIR without GPU Optimization"
 
-VENV_PATH=$(cat /workspace/SUPIR/venv_path})
+VENV_PATH=$(cat /workspace/SUPIR/venv_path)
 source ${VENV_PATH}/bin/activate
 export HF_HOME="/workspace"
 cd /workspace/SUPIR

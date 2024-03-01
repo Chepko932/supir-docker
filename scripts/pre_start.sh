@@ -55,6 +55,7 @@ else
     echo "Starting SUPIR"
     source /workspace/venv/bin/activate
     export HF_HOME="/workspace"
+    cd /workspace/SUPIR
 
     if [[ ${NO_GPU_OPTIMIZATION} ]]
     then

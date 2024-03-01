@@ -17,7 +17,7 @@ sync_apps() {
 
     # Sync SUPIR to workspace to support Network volumes
     echo "Syncing SUPIR to workspace, please wait..."
-    rsync -remove-source-files -rlptDu /SUPIR/ /workspace/SUPIR/
+    rsync -rlptDu /SUPIR/ /workspace/SUPIR/
 
     echo "Syncing models to workspace, please wait..."
     rsync --remove-source-files -rlptDu /hub/ /workspace/hub/

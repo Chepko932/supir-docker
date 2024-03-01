@@ -48,7 +48,7 @@ docker run -d \
   -p 3000:3001 \
   -p 8888:8888 \
   -p 2999:2999 \
-  -e JUPYTER_PASSWORD=Jup1t3R! \
+  -e VENV_PATH="/workspace/venvs/SUPIR" \
   ashleykza/supir:latest
 ```
 
@@ -76,11 +76,11 @@ You can obviously substitute the image name and tag with your own.
 
 ## Environment Variables
 
-| Variable             | Description                                | Default   |
-|----------------------|--------------------------------------------|-----------|
-| JUPYTER_PASSWORD     | Password for Jupyter Lab                   | Jup1t3R!  |
-| DISABLE_AUTOLAUNCH   | Disable SUPIR from launching automatically | (not set) |
-| NO_GPU_OPTIMIZATION  | Disable GPU optimization for A100/H100     | (not set) |
+| Variable             | Description                                | Default                |
+|----------------------|--------------------------------------------|------------------------|
+| VENV_PATH          | Set the path for the Python venv for the app | /workspace/venvs/SUPIR |
+| DISABLE_AUTOLAUNCH   | Disable SUPIR from launching automatically | (not set)              |
+| NO_GPU_OPTIMIZATION  | Disable GPU optimization for A100/H100     | (not set)              |
 
 ## Logs
 

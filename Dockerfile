@@ -145,7 +145,10 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/502.html /usr/share/nginx/html/502.html
 
 # Set the template version
-ENV TEMPLATE_VERSION=1.3.2
+ENV TEMPLATE_VERSION=1.3.3
+
+# Set the venv path
+ENV VENV_PATH="/workspace/venvs/SUPIR"
 
 # Copy the scripts
 WORKDIR /

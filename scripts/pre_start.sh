@@ -13,7 +13,8 @@ fi
 sync_apps() {
     # Sync venv to workspace to support Network volumes
     echo "Syncing venv to workspace, please wait..."
-    rsync -remove-source-files -rlptDu /venv/ /workspace/venv/
+    mkdir -p ${VENV_PATH}
+    rsync -remove-source-files -rlptDu /venv/ ${VENV_PATH}/
 
     # Sync SUPIR to workspace to support Network volumes
     echo "Syncing SUPIR to workspace, please wait..."
@@ -26,9 +27,9 @@ sync_apps() {
 }
 
 fix_venvs() {
-    # Fix the venv to make it work from /workspace
+    # Fix the venv to make it work from VENV_PATH
     echo "Fixing venv..."
-    /fix_venv.sh /venv /workspace/venv
+    /fix_venv.sh /venv ${VENV_PATH}
 }
 
 if [ "$(printf '%s\n' "$EXISTING_VERSION" "$TEMPLATE_VERSION" | sort -V | head -n 1)" = "$EXISTING_VERSION" ]; then
@@ -48,12 +49,12 @@ then
     echo "You can launch it manually:"
     echo ""
     echo "   cd /workspace/SUPIR"
-    echo "   deactivate && source /workspace/venv/bin/activate"
+    echo "   deactivate && source ${VENV_PATH}/bin/activate"
     echo "   export HF_HOME=\"/workspace\""
     echo "   python3 gradio_demo.py --ip 0.0.0.0 --port 3001 --use_image_slider --loading_half_params --use_tile_vae --load_8bit_llava"
 else
     echo "Starting SUPIR"
-    source /workspace/venv/bin/activate
+    source ${VENV_PATH}//bin/activate
     export HF_HOME="/workspace"
     cd /workspace/SUPIR
 

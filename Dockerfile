@@ -90,8 +90,8 @@ RUN mkdir -p /SUPIR/models
 # Add SDXL CLIP2 model
 ADD https://huggingface.co/laion/CLIP-ViT-bigG-14-laion2B-39B-b160k/resolve/main/open_clip_pytorch_model.bin /SUPIR/models/open_clip_pytorch_model.bin
 
-# Add Juggernaut-XL-v9 SDXL model
-ADD https://huggingface.co/RunDiffusion/Juggernaut-XL-v9/resolve/main/Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors /SUPIR/models/Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors
+# Add Base SDXL model - Juggernaut has issues with eyes
+ADD https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0_0.9vae.safetensors /SUPIR/models/sd_xl_base_1.0_0.9vae.safetensors
 
 # Add SUPIR F model
 ADD https://huggingface.co/ashleykleynhans/SUPIR/resolve/main/SUPIR-v0F.ckpt /SUPIR/models/SUPIR-v0F.ckpt
@@ -145,7 +145,7 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/502.html /usr/share/nginx/html/502.html
 
 # Set the template version
-ENV TEMPLATE_VERSION=1.2.1
+ENV TEMPLATE_VERSION=1.3.0
 
 # Copy the scripts
 WORKDIR /

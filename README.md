@@ -54,15 +54,15 @@ docker run -d \
 
 ## Models
 
-| Model                                             | Description |
-|---------------------------------------------------|-------------|
-| SUPIR-v0F.ckpt                                    | SUPIR F     |
-| SUPIR-v0Q.ckpt                                    | SUPIR Q     |
-| liuhaotian/llava-v1.5-7b                          | LLaVA       |
-| Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors | SDXL        |
-| openai/clip-vit-large-patch14-336                 | LLaVA CLIP  |
-| openai/clip-vit-large-patch14                     | SDXL CLIP1  |
-| open_clip_pytorch_model.bin                       | SDXL CLIP2  |
+| Model                             | Description |
+|-----------------------------------|-------------|
+| SUPIR-v0F.ckpt                    | SUPIR F     |
+| SUPIR-v0Q.ckpt                    | SUPIR Q     |
+| liuhaotian/llava-v1.5-7b          | LLaVA       |
+| sd_xl_base_1.0_0.9vae.safetensors | SDXL        |
+| openai/clip-vit-large-patch14-336 | LLaVA CLIP  |
+| openai/clip-vit-large-patch14     | SDXL CLIP1  |
+| open_clip_pytorch_model.bin       | SDXL CLIP2  |
 
 You can obviously substitute the image name and tag with your own.
 

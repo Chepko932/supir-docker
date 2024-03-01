@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
 export PYTHONUNBUFFERED=1
+export APP="SUPIR"
+DOCKER_IMAGE_VERSION_FILE="/workspace/${APP}/docker_image_version"
 
 echo "Template version: ${TEMPLATE_VERSION}"
+echo "venv: ${VENV_PATH}"
 
-if [[ -e "/workspace/template_version" ]]; then
-    EXISTING_VERSION=$(cat /workspace/template_version)
+if [[ -e ${DOCKER_IMAGE_VERSION_FILE} ]]; then
+    EXISTING_VERSION=$(cat ${DOCKER_IMAGE_VERSION_FILE})
 else
     EXISTING_VERSION="0.0.0"
 fi
@@ -14,16 +17,17 @@ sync_apps() {
     # Sync venv to workspace to support Network volumes
     echo "Syncing venv to workspace, please wait..."
     mkdir -p ${VENV_PATH}
-    rsync -remove-source-files -rlptDu /venv/ ${VENV_PATH}/
+    rsync --remove-source-files -rlptDu /venv/ ${VENV_PATH}/
 
-    # Sync SUPIR to workspace to support Network volumes
-    echo "Syncing SUPIR to workspace, please wait..."
-    rsync -rlptDu /SUPIR/ /workspace/SUPIR/
+    # Sync application to workspace to support Network volumes
+    echo "Syncing ${APP} to workspace, please wait..."
+    rsync --remove-source-files -rlptDu /${APP}/ /workspace/${APP}/
 
     echo "Syncing models to workspace, please wait..."
     rsync --remove-source-files -rlptDu /hub/ /workspace/hub/
 
-    echo "${TEMPLATE_VERSION}" > /workspace/template_version
+    echo "${TEMPLATE_VERSION}" > ${DOCKER_IMAGE_VERSION_FILE}
+    echo "${VENV_PATH}" > "/workspace/${APP}/venv_path"
 }
 
 fix_venvs() {
@@ -48,34 +52,21 @@ then
     echo "Auto launching is disabled so the application will not be started automatically"
     echo "You can launch it manually:"
     echo ""
-    echo "   cd /workspace/SUPIR"
-    echo "   deactivate && source ${VENV_PATH}/bin/activate"
-    echo "   export HF_HOME=\"/workspace\""
-    echo "   python3 gradio_demo.py --ip 0.0.0.0 --port 3001 --use_image_slider --loading_half_params --use_tile_vae --load_8bit_llava"
+    echo "   /start_supir_with_gpu_optimization.sh"
+    echo ""
+    echo "OR if you have a GPU with a lot of VRAM:"
+    echo ""
+    echo "   /start_supir.sh"
 else
-    echo "Starting SUPIR"
-    source ${VENV_PATH}//bin/activate
-    export HF_HOME="/workspace"
-    cd /workspace/SUPIR
-
     if [[ ${NO_GPU_OPTIMIZATION} ]]
     then
-        nohup python3 gradio_demo.py \
-            --ip 0.0.0.0 \
-            --port 3001 \
-            --use_image_slider > /workspace/logs/supir.log 2>&1 &
+        /start_supir.sh
     else
-        nohup python3 gradio_demo.py \
-            --ip 0.0.0.0 \
-            --port 3001 \
-            --use_image_slider \
-            --loading_half_params \
-            --use_tile_vae \
-            --load_8bit_llava > /workspace/logs/supir.log 2>&1 &
+        /start_supir_with_gpu_optimization.sh
     fi
-    echo "SUPIR started"
+
+    echo "${APP} started"
     echo "Log file: /workspace/logs/supir.log"
-    deactivate
 fi
 
 echo "All services have been started"

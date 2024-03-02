@@ -3,7 +3,7 @@ FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04 as base
 
 # The commit is not used, its just here as a reference to where it
 # was at the last time this repo was updated.
-ARG SUPIR_COMMIT=ea332a28a7608a6e2b9c95b92ccc0f1367aa152b
+ARG SUPIR_COMMIT=c35568888726c44bed9f35ddb0b7f66768121d45
 ARG TORCH_VERSION=2.2.0
 ARG XFORMERS_VERSION=0.0.24
 
@@ -145,7 +145,7 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/502.html /usr/share/nginx/html/502.html
 
 # Set the template version
-ENV TEMPLATE_VERSION=1.3.5
+ENV TEMPLATE_VERSION=1.4.0
 
 # Set the venv path
 ENV VENV_PATH="/workspace/venvs/SUPIR"

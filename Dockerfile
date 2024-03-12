@@ -1,9 +1,9 @@
 # Stage 1: Base
-FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04 as base
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
 # The commit is not used, its just here as a reference to where it
 # was at the last time this repo was updated.
-ARG SUPIR_COMMIT=1c8e7b86fff7ad66574febc24aaada61a34d029f
+ARG SUPIR_COMMIT=b6d497b31fc0eba3b0fa3d4759b9be0d5ea62ee4
 ARG TORCH_VERSION=2.2.0
 ARG XFORMERS_VERSION=0.0.24
 
@@ -75,9 +75,9 @@ RUN git clone https://github.com/ashleykleynhans/SUPIR.git
 
 # Install the dependencies for SUPIR
 WORKDIR /SUPIR
-ENV TORCH_INDEX_URL="https://download.pytorch.org/whl/cu121"
+ENV TORCH_INDEX_URL="https://download.pytorch.org/whl/cu118"
 ENV TORCH_COMMAND="pip install torch==${TORCH_VERSION} torchvision --index-url ${TORCH_INDEX_URL}"
-ENV XFORMERS_PACKAGE="xformers==${XFORMERS_VERSION}"
+ENV XFORMERS_PACKAGE="xformers==${XFORMERS_VERSION} --index-url ${TORCH_INDEX_URL}"
 RUN source /venv/bin/activate && \
     ${TORCH_COMMAND} && \
     pip3 install -r requirements.txt && \

@@ -1,12 +1,6 @@
 # Stage 1: Base
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as base
 
-# The commit is not used, its just here as a reference to where it
-# was at the last time this repo was updated.
-ARG SUPIR_COMMIT=b6d497b31fc0eba3b0fa3d4759b9be0d5ea62ee4
-ARG TORCH_VERSION=2.2.0+cu118
-ARG XFORMERS_VERSION=0.0.24+cu118
-
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
@@ -70,12 +64,16 @@ FROM base as setup
 RUN python3 -m venv /venv
 
 # Clone the git repo of SUPIR
+ARG SUPIR_COMMIT
 WORKDIR /
 RUN git clone https://github.com/ashleykleynhans/SUPIR.git
 
 # Install the dependencies for SUPIR
+ARG INDEX_URL
+ARG TORCH_VERSION
+ARG XFORMERS_VERSION
 WORKDIR /SUPIR
-ENV TORCH_INDEX_URL="https://download.pytorch.org/whl/cu118"
+ENV TORCH_INDEX_URL=${INDEX_URL}
 ENV TORCH_COMMAND="pip install torch==${TORCH_VERSION} torchvision --index-url ${TORCH_INDEX_URL}"
 ENV XFORMERS_PACKAGE="xformers==${XFORMERS_VERSION} --index-url ${TORCH_INDEX_URL}"
 RUN source /venv/bin/activate && \
@@ -100,7 +98,8 @@ ADD https://huggingface.co/ashleykleynhans/SUPIR/resolve/main/SUPIR-v0F.ckpt /SU
 ADD https://huggingface.co/ashleykleynhans/SUPIR/resolve/main/SUPIR-v0Q.ckpt /SUPIR/models/SUPIR-v0Q.ckpt
 
 # Download additional models
-ENV LLAVA_MODEL="liuhaotian/llava-v1.5-7b"
+ARG LLAVA_MODEL
+ENV LLAVA_MODEL=${LLAVA_MODEL}
 ENV HF_HOME="/"
 COPY --chmod=755 scripts/download_models.py /download_models.py
 RUN source /venv/bin/activate && \
@@ -126,7 +125,7 @@ RUN curl -sSL https://github.com/kodxana/RunPod-FilleUploader/raw/main/scripts/i
 RUN curl https://rclone.org/install.sh | bash
 
 # Install runpodctl
-ARG RUNPODCTL_VERSION="v1.14.2"
+ARG RUNPODCTL_VERSION
 RUN wget "https://github.com/runpod/runpodctl/releases/download/${RUNPODCTL_VERSION}/runpodctl-linux-amd64" -O runpodctl && \
     chmod a+x runpodctl && \
     mv runpodctl /usr/local/bin
@@ -145,11 +144,13 @@ RUN rm -f /etc/ssh/ssh_host_*
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/502.html /usr/share/nginx/html/502.html
 
-# Set the template version
-ENV TEMPLATE_VERSION=1.5.0
+# Set template version
+ARG RELEASE
+ENV TEMPLATE_VERSION=${RELEASE}
 
 # Set the venv path
-ENV VENV_PATH="/workspace/venvs/SUPIR"
+ARG VENV_PATH
+ENV VENV_PATH=${VENV_PATH}
 
 # Copy the scripts
 WORKDIR /

@@ -95,11 +95,12 @@ You can obviously substitute the image name and tag with your own.
 
 ## Environment Variables
 
-| Variable             | Description                                | Default                |
-|----------------------|--------------------------------------------|------------------------|
-| VENV_PATH          | Set the path for the Python venv for the app | /workspace/venvs/SUPIR |
-| DISABLE_AUTOLAUNCH   | Disable SUPIR from launching automatically | (not set)              |
-| NO_GPU_OPTIMIZATION  | Disable GPU optimization for A100/H100     | (not set)              |
+| Variable             | Description                                  | Default                |
+|----------------------|----------------------------------------------|------------------------|
+| VENV_PATH            | Set the path for the Python venv for the app | /workspace/venvs/SUPIR |
+| JUPYTER_LAB_PASSWORD | Set a password for Jupyter lab               | not set - no password  |
+| DISABLE_AUTOLAUNCH   | Disable SUPIR from launching automatically   | (not set)              |
+| NO_GPU_OPTIMIZATION  | Disable GPU optimization for A100/H100       | (not set)              |
 
 ## Logs
 
